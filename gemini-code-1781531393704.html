@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Marketingová výzva</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       BARVY A PÍSMA — Minimalistický, světlý a moderní styl
+       ═══════════════════════════════════════════════════════════ */
+    :root {
+      --barva-pozadi:       #FAF8F5;        /* Jemné teplé světlé pozadí */
+      --barva-text:         #1A1A1A;        /* Tmavě šedá pro hlavní text */
+      --barva-akcent:       #2C3E35;        /* Elegantní hluboká zelená pro akcenty */
+      --barva-muted:        #6E6E6E;        /* Tlumená šedá pro doplňkový text */
+      --barva-border:       #E5E0DA;        /* Jemná linie pro oddělení patičky */
+      --pismo-hlavni:       'Playfair Display', serif;
+      --pismo-ui:           'Montserrat', sans-serif;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ZÁKLADNÍ LAYOUT
+       ═══════════════════════════════════════════════════════════ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--barva-pozadi);
+      color: var(--barva-text);
+      font-family: var(--pismo-ui);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .stranka {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 20px 40px;
+    }
+
+    .obsah {
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HLAVIČKA
+       ═══════════════════════════════════════════════════════════ */
+    .hlavicka {
+      margin-bottom: 32px;
+    }
+
+    .nazev {
+      font-family: var(--pismo-hlavni);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--barva-akcent);
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .podtitul {
+      font-size: 14px;
+      color: var(--barva-muted);
+      line-height: 1.5;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       KARTA — Automatické přímé zobrazení obsahu
+       ═══════════════════════════════════════════════════════════ */
+    .karta-wrap {
+      width: 100%;
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      background: #ffffff;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      text-align: left;
+    }
+
+    .karta-wrap.je-viditelna {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .karta-nadpis {
+      font-family: var(--pismo-hlavni);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--barva-akcent);
+      line-height: 1.3;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .karta-obrazek {
+      width: 100%;
+      max-height: 340px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .karta-popis {
+      font-family: var(--pismo-ui);
+      font-size: 15px;
+      color: var(--barva-text);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BADGE A PATIČKA
+       ═══════════════════════════════════════════════════════════ */
+    .den-badge {
+      display: inline-block;
+      background: var(--barva-akcent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    .paticka {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--barva-border);
+      width: 100%;
+      text-align: center;
+    }
+
+    .paticka-text {
+      font-size: 12px;
+      color: var(--barva-muted);
+    }
+  </style>
+</head>
+
+<body>
+  <main class="stranka">
+    <div class="obsah">
+
+      <div class="hlavicka">
+        <h1 class="nazev">Marketingová výzva</h1>
+        <p class="podtitul">Váš úkol pro dnešní den</p>
+      </div>
+
+      <div class="den-badge" id="denBadge" style="display:none;"></div>
+
+      <div class="karta-wrap" id="kartaWrap">
+        <h2 class="karta-nadpis" id="kartaNadpis"></h2>
+        <img class="karta-obrazek" id="kartaObrazek" src="" alt="Obrázek k úkolu" style="display:none;" />
+        <div class="karta-popis" id="kartaPopis"></div>
+      </div>
+
+      <div class="paticka">
+        <p class="paticka-text">&copy; 2026 | Vyrobeno pro vaši úspěšnou kampaň</p>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+  // ═══════════════════════════════════════════════════════════════════
+  //  KONFIGURACE A TVŮJ OBSAH
+  // ═══════════════════════════════════════════════════════════════════
+
+  var KONFIGURACE = {
+    rezim: "datum",
+    datum_zacatku: "2026-06-15", // Formát RRRR-MM-DD
+
+    text_pred_zacatkem: "Tato marketingová hra ještě neodstartovala. První úkol se vám odemkne v den zahájení. Těšte se!",
+    text_po_skonceni: "Všech 24 dní marketingové hry je úspěšně za námi! Děkuji za vaši účast a skvělou energii při plnění úkolů.",
+
+    karty: [
+      {
+        nadpis: "Mrkněte na čísla",
+        obrazek: "https://drive.google.com/uc?export=view&id=19mXqzkS9Nzbs15nY9RpNCRqRMHVlxoBU",
+        popis: "Úkol je splněný: jakýmkoliv screenshotem s dosahy, návštěvností nebo jinou metrikou\n\nVětšina sítí vám umožní sledovat, jak si vaše příspěvky vedou. Je dobré se na čísla alespoň jednou za čas podívat - a sledovat, kterým směrem se mění.\n\nScreenshoty z aplikace sítě, kterou používáte, si tentokrát udělejte hlavně pro sebe (pokud nechcete rovnou založit tabulky pro podrobnější analytiku). Podívejte se, jak vám roste sledovanost, jaké máte dosahy - a které příspěvky si dosud vedly nejlépe (ty můžete příležitostně použít jako vzor pro další - a sledovat, jestli budou hnout stejný úspěch).\n\nDo komentářů stačí přidat 1 screenshot s čísly - je jedno, jestli to budou statistiky účtů nebo to, jak si vede 1 z vašich příspěvků. Cokoliv je vám příjemné sdílet."
+      },
+      {
+        nadpis: "Pošlete newsletter",
+        obrazek: "https://drive.google.com/uc?export=view&id=1S2Tj_2yEYs8Wt2LI_Rh0IPN847776xea",
+        popis: "Úkol je splněný: odeslaným newsletterem nebo náhradní variantou, pokud databázi e-mailů nemáte (více na konci příspěvku)\n\nE-mailing je pořád nejlepším prodejním nástrojem z hlediska poměru cena/výkon. A určitě se vám ho vyplatí pravidelně používat.\n\nPokud už svou databázi kontaktů máte, dnes je čas napsat e-mail. Téma je úplně na vás.\n\nMůžete napsat, že hrajete hru na nastartování vašich sítí a pozvat je, ať se podívají, jak se vám to daří.\nMůžete poslat prodejní e-mail.\nMůžete jim poslat rodinný recept na vanilkové rohlíčky a s předstihem popřát šťastné svátky (protože těsně před vánocemi to budou dělat všichni).\nMůžete poslat novinky z vašeho oboru nebo sezónní tip.\nTéma je jenom na vás. A je úplně jedno, jestli teď máte v databázi 2 kontakty, nebo 20.000.\n\nJeště databázi kontaktů nemáte? Pokud víte, že by e-mailing do vašeho marketingového ekosystému patřit měl, založte si v rámci dnešního úkolu účet v některém e-mailingovém nástroji. Nechcete-li řešit dlouhé rozhodování, doporučuji vám MailerLite (dobře se s ním pracuje, základní účet je zdarma, cenová politika je rozumná). Jste-li v oboru MLM, MailerLite vás má v zakázaném segmentu. Zkuste Ecomail nebo třeba ActiveCampaign.\n\nE-mailing je pro vás v blízké budoucnosti naprosto nerelevantní? Tak zůstaneme u sítí. Přidejte jeden příspěvek, kterým zareagujete na něco, co se teď u vás či kolem vás děje. Svátky, blížící se prázdniny, váš aktuální projekt, tahle marketingová hra, počasí tam, kde žijete..."
+      },
+      {
+        nadpis: "Natočte video na sociální sítě",
+        obrazek: "https://drive.google.com/uc?export=view&id=1flZhW9Y1A6ly_I6j2HbWmyx4aaQ2aEEN",
+        popis: "Úkol je splněný: když to alespoň zkusíte (i bez zveřejnění)\n\nVidea na sítích fungují - zejména ta krátká teď podporuje a tlačí naprostá většina hlavních sítí (snad kromě LinkedInu).\n\nVaším dnešním úkolem je si video vyzkoušet - nebo vytvořit jedno nové, pokud už je děláte. Můžete zkusit využít nejsilnějšího formátu a natočit krátké video do 1 minuty, které pak použijete na Instagramu, Facebooku, YouTube nebo TikToku. Můžete zkusit živé vysílání - sami nebo společně s někým dalším. Můžete natočit krátké video a vložit ho do stories.\n\nPokud už videa děláte, doporučuji vám buďto využít nejsilnějšího formátu Reels - a nebo vystoupit z komfortní zóny a udělat něco, co běžně neděláte (třeba živé vysílání).\n\nPokud jste zatím nikdy video na sítě nenatáčeli, váš úkol je to alespoň zkusit. Vezměte telefon, vymyslete téma a natočte libovolně dlouhé video. Nemusíte ho zveřejňovat, pokud z něj nebudete mít dobrý pocit (občas je potřeba si to párkrát vyzkoušet). Do komentáře stačí vložit screenshot z vašeho videa.\n\nJak si poradit s nejčastějšími problémy při točení krátkých videí vás naučím v minutovém online kurzu, který najdete pod https://landing.mailerlite.com/webforms/landing/z3q6t8"
+      },
+      {
+        nadpis: "Sdílejte dobrou radu nebo tip",
+        obrazek: "https://drive.google.com/uc?export=view&id=1GRtKS4LClCD_eSG_No603LZuIFAnkkWv",
+        popis: "Úkol je splněný: sdílením příspěvku nebo stories\n\nSdílení rad a tipů je skvělý způsob, jak si upevnit pozici člověka znalého v oboru. Pokud máte byznysově nebo tématicky zaměřený účet, vytáhněte z klobouku jednu dobrou radu. Něco, na co se vás lidé často ptají. Něco, co polovina vašich klientů dělá špatně. Něco, co by podle vás měl o vašem oboru vědět úplně každý. Nebo naopak něco, co skoro nikdo neví...\n\nPokud je váš účet spíše lifestylový, dejte radu nebo tip, kterou vaši sledující ocení. Možná je zajímá, kam chodíte nakupovat oblečení nebo jak na fotku zapózovat, aby vypadala stejně dobře, jako ta vaše.\n\nFantazii se meze nekladou."
+      },
+      {
+        nadpis: "Zkuste něco prodat",
+        obrazek: "https://drive.google.com/uc?export=view&id=1GO-X6DfZ2VpwUWBLzw0Wl00L1A-jQ_l_",
+        popis: "Úkol je splněný: zveřejněním nabídky (pokud nic neprodáváte, alternativní možnost splnění najdete na konci příspěvku)\n\nMarketing je o tom, že jste vidět - a že na tom dokážete dlouhodobě vydělávat. A když aktivně neprodáváte, tak většinou moc neprodáte.\n\nPojďte si dnes vyzkoušet prodejní příspěvek - opět v libovolném formátu. Text, grafika, fotografie, video - příspěvek nebo stories. Zkuste udělat takovou nabídku, aby skončila alespoň jedním prodejem - ale pokud s tím nemáte zkušenosti, neřešte, pokud prodej nedopadne. Někdo má publikum natěšené na nové produkty, někdo si ho na ně nejprve musí \"naučit\".\n\nNic neprodáváte nebo vám zrovna neběží prodejní kampaň? Zkuste prodat sami sebe. Napište alespoň jeden důvod (ale klidně mnohem více), proč by lidé měli sledovat právě vás - a zkuste se svých sledujících zeptat, proč by vás doporučili někomu, koho znají. Screenshot příspěvku stačí, nemusí být i s reakcemi."
+      },
+      {
+        nadpis: "Výstup z komfortní zóny",
+        obrazek: "https://drive.google.com/uc?export=view&id=1xglSWSkV_bKOQBVeHVHL9oET4seXo0R-",
+        popis: "Úkol je splněný: když to jakýmkoliv způsobem uděláte\n\nČas na chvíli opustit bezpečí rakety! Udělejte něco, do čeho se vám nechce, protože s tím nemáte zkušenosti (pokud nic takového neexistuje, zkuste něco, co jste ještě nezkusili).\n\nZázraky začínají tam, kde komfortní zóna končí. A všechny věci jsou těžké, dokud se nestanou lehkými.\n\nPojďte si zkusit živé vysílání, nechte se přizvat k rozhovoru, natočte video na TikTok nebo vytvořte novou Lipstick Offer (více na konci příspěvku) - a rovnou ji zkuste prodat. V ideálním případě udělejte něco, čeho se bojíte - nebo se vám do toho fakt nechce, i když víte, že by vás to posunulo dál.\n\nCo to bude, to je plně na vás. A ano, jde o vaši komfortní zónu. Je úplně jedno, že lidé kolem vás to třeba zvládají levou zadní. Překračujte svoje hranice, ať jsou kdekoliv :-)\n\nCo je Lipstick Offer? Strategie prodeje drobných produktů pro rozšiřování databáze, pasivní prodej či prodej ve funnelech, ušitá na míru ekonomické recesi. MasterClass s popisem techniky najdete na https://luciehaberlova.cz/masterclass/"
+      },
+      {
+        nadpis: "Inspirujte!",
+        obrazek: "https://drive.google.com/uc?export=view&id=1SJm-lrRfsOq0wZxff5j-90_JgiJ0Kq9V",
+        popis: "Úkol je splněný: nasdílením příspěvku /stories o jiném účtu či autorovi\n\nDnes to bude úplně jednoduché. Řekněte svým sledujícím, kdo vás inspiruje. Jakoukoliv formou. Přesdílejte do stories cizí příspěvek a řekněte, proč právě ten. Nasdílejte blog zajímavého autora. Napište příspěvek o knize, kterou doporučujete - nebo upozorněte na zajímavý účet na YouTube.\n\nProstě - podělte se o inspiraci a podpořte někoho, koho sledujete (online či offline)."
+      },
+      {
+        nadpis: "Ukažte se jako profík",
+        obrazek: "https://drive.google.com/uc?export=view&id=1HtAF5-ufxKr63JZ5cDeppgEWm0J_ZMEp",
+        popis: "Úkol je splněný: zveřejněním příspěvku\n\nPředstavte svým sledujícím něco, co zvládáte \"levou zadní\". Pochlubte se poslední zakázkou. Vyfoťte svůj produkt - nebo třeba to, jak vypadají vaše odesílané balíčky. Mluvte o něčem, co ostatní neumí, ale vy to děláte denně. A nebo se naopak pochlubte něčím, co o vás nevědí, protože to do vaší profese nespadá (třeba že jako markeťák hrajete skvěle na kytaru).\n\nForma příspěvku je úplně na vás."
+      },
+      {
+        nadpis: "Co dělám a co nedělám",
+        obrazek: "https://drive.google.com/uc?export=view&id=1jP-GDzTQx-Hlav5AjMSO5Kx1zqChswoG",
+        popis: "Úkol je splněný: zveřejněním příspěvku\n\nDejte nám trochu nahlédnout pod pokličku toho, co k vaší práci patří. Napište či řekněte, co děláte vy sami - a kde vám pomáhají další lidé. Je úplně na vás, jestli budete psát o tom, že tvoříte weby, ale delegujete UX a copywriting, nebo že sami vyrábíte hračky pro děti - a neobejdete se bez kouče a thajské masérky. Nebo představte lidi, které máte kolem sebe a podporují vás - nebo naopak vy podporujete je. Ať už je to rodina nebo někdo jiný.\n\nForma je zcela na vás - od videa z masážního salónu ve stories až po foto celého firemního týmu s popisem pozic na LinkedInu"
+      },
+      {
+        nadpis: "Vaše superschopnost",
+        obrazek: "https://drive.google.com/uc?export=view&id=1i4dOOKSASnaFUH6EXQPdqHlE-gkJ6SP_",
+        popis: "Úkol je splněný: zveřejněním příspěvku\n\nJste superhrdina/superhrdinka. Co je vaše superschopnost?\nBuďte vážní nebo buďte vtipní. Je úplně na vás, jestli svým sledujícím řeknete, že na první pohled poznáte, jestli bude jejich reklamní příspěvek úspěšný nebo ne - nebo si ze sebe uděláte legraci a s plechem cukroví představíte svou superschopnost připálit vždycky alespoň 1 várku.\n\nSítě jsou hra. Někomu funguje brát ji vážně, někomu vtipně, někomu něco mezi tím. Vyzkoušejte si, jaká poloha vám sedí.\n\nForma je libovolná - příspěvek, video, stories...cokoliv vám bude vyhovovat"
+      },
+      {
+        nadpis: "Cíl pro váš marketing",
+        obrazek: "https://drive.google.com/uc?export=view&id=10HJY_GpRjUBvJ-feU3mfemZ-JXpuE61A",
+        popis: "Úkol je splněný: když si napíšete alespoň 1\n\nDnes se trochu zasníme - a trochu zaplánujeme.\nVezměte si tužku a papír - a napište si na ně, kde se svým marketingem chcete být za 3 měsíce. Jak moc budete podrobní, to je na vás.\n\nJá osobně bych se zamyslela nad tím:\n• na kterých sítích chci být aktivní, jak moc (kolik příspěvků týdně), a na kolik sledujících se chci dostat\n• jaké další kanály chci kromě sítí používat - a jak. Opět můžete doplnit čísla.\n• jestli chci používat reklamu, kolik peněz do ní chci vložit a jaké očekávám výstupy\n• co budu prodávat a jak.\n• jestli chci vytvořit nějaké nové produkty.\n\nDo komentářů tentokrát patří fotka alespoň s 1 cílem (v ideálním případě nasdílejte všechno - ale nemusíte sdílet víc, než je vám příjemné).\n\nPsané plány mají jednu velkou výhodu. Naplní se mnohem spíše, než ty, které máme jen v hlavě. Protože už jejich sepsání nás nutí přemýšlet nad tím, jaké pro to uděláme další kroky."
+      },
+      {
+        nadpis: "Já a já",
+        obrazek: "https://drive.google.com/uc?export=view&id=1QJOlYFpiLrecJHQpxcJov7SEksDzd4h9",
+        popis: "Úkol je splněný: zveřejněním příspěvku\n\nPochlubte se něčím, co o vás vaše publikum neví - nebo co by od vás vůbec nečekalo. Buďte osobní, klidně zcela nebyznysoví a neformální.\n\nUkažte, jak jezdíte na koni, milujete jídlo v indickém bistru, zpíváte německy Ódu na radost nebo s jistotou zkušeného zedníka nahazujete stěnu omítkou (jo, všechno já ).\n\nBut teď je to o vás.\nCo o vás vaši sledující nevědí - a bavilo by je to vědět - a nebo je to pořádně překvapilo?"
+      },
+      {
+        nadpis: "1 věc",
+        obrazek: "https://drive.google.com/uc?export=view&id=1_qKbyTMTwC4WIsHy2qGrB9F8fQD8P1BM",
+        popis: "Úkol je splněný: zveřejněním příspěvku\n\nJe čas začít startovat vlastní kreativitu. Vymyslete jedno téma, které svým sledujícím potřebujete pravidelně ukazovat - a na které se zatím nedostalo (ať už ve hře nebo na vašem účtu jako takovém).\nA rovnou přidejte první příspěvek.\n\nMožná je to součást vaší nabídky, o které zapomínáte mluvit. Možná je to nebyznysové téma, které vašim sledujícím zoufale chybí. Možná je to informace o tom, kde jsou zdroje vašich vědomostí a schopností. Možná jsou to reference vašich klientů...\n\nS klienty na sociální sítě téměř vždycky začínáme hledáním jejich 4 - 6 obsahových pilířů - tedy témat, která by měli různou formou komunikovat - pořád dokola. Aby byl jejich obsah konsistentní a podporoval jejich záměry na sítích i v dalších marketingových kanálech.\n\nPokud potřebujete své obsahové pilíře objevit, mluvím o nich v MasterClass 5 pilířů obsahu na https://luciehaberlova.cz/masterclass/"
+      },
+      {
+        nadpis: "Dárek",
+        obrazek: "https://drive.google.com/uc?export=view&id=1Oqgmx50-Sw-hb6ziXCQIB3KYvyMdX862",
+        popis: "Úkol je splněný: zveřejněním příspěvku nebo jiné zvolené formy\n\nI když nejsou každý den vánoce, pojďte svým klientům nadělit dárek. Dejte jim jednu dobrou radu nebo tip, který jste zdarma ještě nikdy nikomu nedali. Nebo jim v e-mailu pošlete překvapení - přístup ke kurzu zdarma, sadu šablon v Canvě, návod na to, jak nafotit krásné rodinné vánoční fotky. Cokoliv, co jim udělá radost - a co od vás nečekali.\n\nBuďte kreativní a zkuste si s tím trochu hrát.\n\nForma je plně na vás, stejně tak velikost a hodnota vašeho 'dárku'. ASMR video čtení tajného receptu z vaší oblíbené kuchařky se počítá úplně stejně, jako rozesílka zlatých cihel věrným zákazníkům."
+      }
+    ]
+  };
+
+  // ═══════════════════════════════════════════════════════════════════
+  //  KÓD APLIKACE (AUTOMATICKÉ NAČTENÍ)
+  // ═══════════════════════════════════════════════════════════════════
+
+  function ziskejIndexPodle() {
+    var rezim = KONFIGURACE.rezim;
+    var karty = KONFIGURACE.karty;
+
+    if (rezim === 'datum') {
+      var zacatek = new Date(KONFIGURACE.datum_zacatku);
+      var dnes = new Date();
+      zacatek.setHours(0,0,0,0);
+      dnes.setHours(0,0,0,0);
+      var rozdil = Math.floor((dnes - zacatek) / (1000 * 60 * 60 * 24));
+      if (rozdil < 0) return { index: -1, typ: 'pred' };
+      if (rozdil >= karty.length) return { index: -1, typ: 'po' };
+      return { index: rozdil, typ: 'datum', den: rozdil + 1 };
+    }
+    return { index: Math.floor(Math.random() * karty.length), typ: 'nahodny' };
+  }
+
+  function zobrazKartu(index) {
+    var karta = KONFIGURACE.karty[index];
+    var wrap = document.getElementById('kartaWrap');
+    var nadpis = document.getElementById('kartaNadpis');
+    var obrazek = document.getElementById('kartaObrazek');
+    var popis = document.getElementById('kartaPopis');
+
+    wrap.classList.remove('je-viditelna');
+
+    setTimeout(function() {
+      nadpis.textContent = karta.nadpis;
+
+      if (karta.obrazek && karta.obrazek !== '') {
+        obrazek.src = karta.obrazek;
+        obrazek.style.display = 'block';
+      } else {
+        obrazek.style.display = 'none';
+      }
+
+      popis.innerHTML = karta.popis.replace(/\n/g, '<br>');
+      wrap.classList.add('je-viditelna');
+    }, 100);
+  }
+
+  function nastavKartu() {
+    var vysledek = ziskejIndexPodle();
+    var denBadge = document.getElementById('denBadge');
+
+    if (vysledek.typ === 'pred') {
+      document.getElementById('kartaNadpis').textContent = "Už brzy...";
+      document.getElementById('kartaPopis').textContent = KONFIGURACE.text_pred_zacatkem;
+      document.getElementById('kartaObrazek').style.display = 'none';
+      document.getElementById('kartaWrap').classList.add('je-viditelna');
+      return;
+    }
+
+    if (vysledek.typ === 'po') {
+      document.getElementById('kartaNadpis').textContent = "Konec hry";
+      document.getElementById('kartaPopis').textContent = KONFIGURACE.text_po_skonceni;
+      document.getElementById('kartaObrazek').style.display = 'none';
+      document.getElementById('kartaWrap').classList.add('je-viditelna');
+      return;
+    }
+
+    if (vysledek.typ === 'datum') {
+      denBadge.textContent = 'Úkol ' + vysledek.den + ' z 24';
+      denBadge.style.display = 'inline-block';
+    }
+
+    zobrazKartu(vysledek.index);
+  }
+
+  // Spustit automaticky ihned po načtení stránky
+  document.addEventListener('DOMContentLoaded', nastavKartu);
+  </script>
+</body>
+</html>
